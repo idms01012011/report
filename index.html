@@ -279,9 +279,16 @@ button {
 
     container.style.display = 'none';
   });
+  function resizeCanvasToDisplaySize(canvas) {
+    const rect = canvas.getBoundingClientRect();
+    canvas.width = rect.width;
+    canvas.height = rect.height;
+  }
+
   function setupSignatureCanvas(canvasId) {
   const canvas = document.getElementById(canvasId);
   const ctx = canvas.getContext('2d');
+  resizeCanvasToDisplaySize(canvas);
   ctx.lineWidth = 2;
   ctx.strokeStyle = "#000";
 
