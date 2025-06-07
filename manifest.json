@@ -1,0 +1,16 @@
+{
+  "name": "Service Report",
+  "short_name": "Report",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "description": "สร้างรายงานงานซ่อม Service Report",
+  "icons": [
+    {
+      "src": "logo.jpg",
+      "type": "image/jpg",
+      "sizes": "512x512"
+    }
+  ],
+  "theme_color": "#000000"
+}

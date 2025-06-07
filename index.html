@@ -1,0 +1,308 @@
+﻿<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Service Report</title>
+  <link rel="apple-touch-icon" href="logo.jpg">
+  <link rel="icon" href="logo.jpg" type="image/jpg" />
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#000000" />
+  <style>
+    body {
+      font-family: 'Kanit', sans-serif;
+      padding: 20px;
+      background: #f0f0f0;
+    }
+    form {
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      max-width: 600px;
+      margin-bottom: 30px;
+    }
+    label, select, input, textarea, button {
+      display: block;
+      width: 100%;
+      margin-top: 10px;
+      font-size: 16px;
+    }
+    #content {
+      font-family: 'Kanit', sans-serif;
+      font-size: 14px;
+      color: #000;
+      padding: 0;
+      margin: 0;
+      width: 180mm;
+      background: white;
+      box-sizing: border-box;
+    }
+    h2 {
+      margin: 0 0 10px 0;
+      padding: 0;
+      line-height: 1.2;
+      text-align: center;
+    }
+    hr {
+      margin: 10px 0;
+    }
+    .image-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+    .image-grid img {
+      max-width: 100%;
+      max-height: 200px;
+      object-fit: contain;
+      page-break-inside: avoid;
+    }
+    canvas {
+      border: 1px solid #ccc;
+      background: #fff;
+      border-radius: 5px;
+      touch-action: none;
+      width: 300px;
+      height: 100px;
+    }
+    .signature-container {
+      margin: 20px 0;
+    }
+    button {
+      margin-top: 8px;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>สร้างรายงาน Service Report</h2>
+
+  <form id="reportForm">
+    <label>วันที่:</label>
+    <input type="date" id="date" required>
+
+    <label>ชื่อช่าง:</label>
+    <input type="text" id="technician" required>
+
+    <label>บริษัท:</label>
+    <input type="text" id="company" required>
+
+    <label>ชื่อลูกค้า:</label>
+    <input type="text" id="customer" required>
+
+    <label>สถานที่:</label>
+    <input type="text" id="location" required>
+
+    <label>หมายเลขเครื่อง:</label>
+    <input type="text" id="machineNumber" required>
+
+    <label>อาการเสีย:</label>
+    <textarea id="problem" required></textarea>
+
+    <label>การแก้ไข:</label>
+    <textarea id="solution" required></textarea>
+
+    <label>สถานะเครื่อง:</label>
+    <select id="status" required>
+      <option value="ใช้งานได้">ใช้งานได้</option>
+      <option value="รออะไหล่">รออะไหล่</option>
+      <option value="อื่นๆ">อื่นๆ</option>
+    </select>
+
+    <label>แนบรูปภาพ:</label>
+    <input type="file" id="images" accept="image/*" multiple>
+
+    <div class="signature-container">
+      <label>ลายเซ็นช่าง:</label>
+      <canvas id="signaturePadTech"></canvas>
+      <button type="button" onclick="clearPad('signaturePadTech')">ล้างลายเซ็น</button>
+    </div>
+
+    <div class="signature-container">
+      <label>ลายเซ็นลูกค้า:</label>
+      <canvas id="signaturePadCustomer"></canvas>
+      <button type="button" onclick="clearPad('signaturePadCustomer')">ล้างลายเซ็น</button>
+    </div>
+
+    <button type="submit">สร้างรายงาน PDF</button>
+  </form>
+
+  <div id="content" style="display:none;"></div>
+
+  <!-- JavaScript Libraries -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+  <!-- Service Worker -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js')
+          .then(reg => console.log('Service Worker registered'))
+          .catch(err => console.log('Service Worker registration failed', err));
+      });
+    }
+  </script>
+
+  <!-- Main Script -->
+  <script>
+    class SignaturePad {
+      constructor(canvas) {
+        this.canvas = canvas;
+        this.ctx = canvas.getContext('2d');
+        this.isDrawing = false;
+        this.resizeCanvas();
+
+        canvas.addEventListener('mousedown', this.startDraw.bind(this));
+        canvas.addEventListener('mousemove', this.draw.bind(this));
+        canvas.addEventListener('mouseup', this.stopDraw.bind(this));
+        canvas.addEventListener('mouseout', this.stopDraw.bind(this));
+        canvas.addEventListener('touchstart', this.startDraw.bind(this), { passive: false });
+        canvas.addEventListener('touchmove', this.draw.bind(this), { passive: false });
+        canvas.addEventListener('touchend', this.stopDraw.bind(this));
+      }
+
+      resizeCanvas() {
+        const ratio = Math.max(window.devicePixelRatio || 1, 1);
+        this.canvas.width = this.canvas.offsetWidth * ratio;
+        this.canvas.height = this.canvas.offsetHeight * ratio;
+        this.canvas.getContext("2d").scale(ratio, ratio);
+      }
+
+      startDraw(e) {
+        e.preventDefault();
+        this.isDrawing = true;
+        this.ctx.beginPath();
+        const pos = this.getPosition(e);
+        this.ctx.moveTo(pos.x, pos.y);
+      }
+
+      draw(e) {
+        if (!this.isDrawing) return;
+        e.preventDefault();
+        const pos = this.getPosition(e);
+        this.ctx.lineTo(pos.x, pos.y);
+        this.ctx.stroke();
+      }
+
+      stopDraw(e) {
+        if (!this.isDrawing) return;
+        e.preventDefault();
+        this.isDrawing = false;
+      }
+
+      getPosition(e) {
+        const rect = this.canvas.getBoundingClientRect();
+        if (e.touches && e.touches.length > 0) {
+          return {
+            x: e.touches[0].clientX - rect.left,
+            y: e.touches[0].clientY - rect.top
+          };
+        }
+        return {
+          x: e.clientX - rect.left,
+          y: e.clientY - rect.top
+        };
+      }
+
+      toDataURL() {
+        return this.canvas.toDataURL();
+      }
+
+      clear() {
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+      }
+    }
+    const form = document.getElementById('reportForm');
+    const content = document.getElementById('content');
+
+    const signaturePads = {
+      signaturePadTech: new SignaturePad(document.getElementById('signaturePadTech')),
+      signaturePadCustomer: new SignaturePad(document.getElementById('signaturePadCustomer'))
+    };
+
+    function clearPad(id) {
+      signaturePads[id].clear();
+    }
+
+    form.addEventListener('submit', async function (e) {
+      e.preventDefault();
+
+      const images = document.getElementById('images').files;
+      const imageElements = [];
+
+      for (let img of images) {
+        const reader = new FileReader();
+        const promise = new Promise((resolve) => {
+          reader.onload = function (e) {
+            const image = new Image();
+            image.src = e.target.result;
+            image.onload = () => resolve(image);
+          };
+        });
+        reader.readAsDataURL(img);
+        imageElements.push(promise);
+      }
+
+      const loadedImages = await Promise.all(imageElements);
+
+      const data = {
+        date: document.getElementById('date').value,
+        technician: document.getElementById('technician').value,
+        company: document.getElementById('company').value,
+        customer: document.getElementById('customer').value,
+        location: document.getElementById('location').value,
+        machineNumber: document.getElementById('machineNumber').value,
+        problem: document.getElementById('problem').value,
+        solution: document.getElementById('solution').value,
+        status: document.getElementById('status').value,
+        signatureTech: signaturePads.signaturePadTech.toDataURL(),
+        signatureCustomer: signaturePads.signaturePadCustomer.toDataURL()
+      };
+
+      content.innerHTML = `
+        <h2>Service Report</h2>
+        <p><strong>วันที่:</strong> ${data.date}</p>
+        <p><strong>ชื่อช่าง:</strong> ${data.technician}</p>
+        <p><strong>บริษัท:</strong> ${data.company}</p>
+        <p><strong>ชื่อลูกค้า:</strong> ${data.customer}</p>
+        <p><strong>สถานที่:</strong> ${data.location}</p>
+        <p><strong>หมายเลขเครื่อง:</strong> ${data.machineNumber}</p>
+        <p><strong>อาการเสีย:</strong><br>${data.problem}</p>
+        <p><strong>การแก้ไข:</strong><br>${data.solution}</p>
+        <p><strong>สถานะเครื่อง:</strong> ${data.status}</p>
+        <hr>
+        <div class="image-grid">
+          ${loadedImages.map(img => `<img src="${img.src}" />`).join('')}
+        </div>
+        <hr>
+        <p><strong>ลายเซ็นช่าง:</strong><br><img src="${data.signatureTech}" width="200" /></p>
+        <p><strong>ลายเซ็นลูกค้า:</strong><br><img src="${data.signatureCustomer}" width="200" /></p>
+      `;
+
+      content.style.display = 'block';
+
+      const canvas = await html2canvas(content);
+      const imgData = canvas.toDataURL('image/png');
+
+      const { jsPDF } = window.jspdf;
+      const pdf = new jsPDF({
+        orientation: 'portrait',
+        unit: 'mm',
+        format: 'a4'
+      });
+
+      const imgProps = pdf.getImageProperties(imgData);
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+
+      pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+      pdf.save(`ServiceReport_${data.date}.pdf`);
+    });
+
+  </script>
+
+</body>
+</html>
