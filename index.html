@@ -324,7 +324,7 @@ button {
     const pos = getPointerPos(e);
     ctx.beginPath();
     ctx.moveTo(pos.x, pos.y);
-  });
+  }, { passive: false });
 
   canvas.addEventListener('touchmove', (e) => {
     e.preventDefault();
@@ -332,12 +332,12 @@ button {
     const pos = getPointerPos(e);
     ctx.lineTo(pos.x, pos.y);
     ctx.stroke();
-  });
+  }, { passive: false });
 
   canvas.addEventListener('touchend', (e) => {
     e.preventDefault();
     drawing = false;
-  });
+  }, { passive: false });
 }
 
 function clearCanvas(canvasId) {
