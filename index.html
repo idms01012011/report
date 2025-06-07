@@ -96,13 +96,13 @@ button {
   <div class="signature-container">
   <label>ลายเซ็นที่ 1:</label><br />
   <canvas id="sig1" width="300" height="100"></canvas><br />
-  <button type="button" onclick="clearCanvas('sig1')">ล้างลายเซ็นที่ 1</button>
+  <button onclick="clearCanvas('sig1')">ล้างลายเซ็นที่ 1</button>
 </div>
 
 <div class="signature-container">
   <label>ลายเซ็นที่ 2:</label><br />
   <canvas id="sig2" width="300" height="100"></canvas><br />
-  <button type="button" onclick="clearCanvas('sig2')">ล้างลายเซ็นที่ 2</button>
+  <button onclick="clearCanvas('sig2')">ล้างลายเซ็นที่ 2</button>
 </div>
   <button type="submit">สร้าง PDF</button>
 </form>
@@ -324,7 +324,7 @@ button {
     const pos = getPointerPos(e);
     ctx.beginPath();
     ctx.moveTo(pos.x, pos.y);
-  }, { passive: false });
+  });
 
   canvas.addEventListener('touchmove', (e) => {
     e.preventDefault();
@@ -332,21 +332,19 @@ button {
     const pos = getPointerPos(e);
     ctx.lineTo(pos.x, pos.y);
     ctx.stroke();
-  }, { passive: false });
+  });
 
   canvas.addEventListener('touchend', (e) => {
     e.preventDefault();
     drawing = false;
-  }, { passive: false });
+  });
 }
 
-function clearCanvas(event, canvasId) {
-  event.preventDefault(); // ป้องกัน submit
+function clearCanvas(canvasId) {
   const canvas = document.getElementById(canvasId);
   const ctx = canvas.getContext('2d');
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
-
 
 // เรียก setup สำหรับทั้งสอง canvas
 setupSignatureCanvas('sig1');
