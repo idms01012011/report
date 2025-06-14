@@ -11,20 +11,44 @@
     font-family: 'Kanit', sans-serif;
     padding: 0;
     margin: 0;
-    background: linear-gradient(120deg, #c6e2ff 0%, #f0f0f0 100%);
+    background: linear-gradient(135deg, #dbeafe 0%, #f0f4f8 100%);
     min-height: 100vh;
   }
+  header {
+    background: linear-gradient(90deg, #1767b2 0%, #2fa7e2 100%);
+    color: #fff;
+    padding: 28px 0 20px 0;
+    text-align: center;
+    letter-spacing: 1px;
+    box-shadow: 0 2px 12px #1767b233;
+  }
+  header img {
+    width: 54px;
+    margin-bottom: 6px;
+    filter: drop-shadow(0 2px 8px #fff7);
+  }
+  header h1 {
+    margin: 7px 0 0 0;
+    font-size: 2.15rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+  }
   .container {
-    max-width: 680px;
-    margin: 40px auto 24px auto;
-    background: rgba(255,255,255,0.96);
-    border-radius: 16px;
-    box-shadow: 0 10px 32px 0 rgba(30,100,180,0.11), 0 2px 4px 0 rgba(30,100,180,0.07);
-    padding: 32px 24px 24px 24px;
+    max-width: 700px;
+    margin: 36px auto 32px auto;
+    background: rgba(255,255,255,0.99);
+    border-radius: 18px;
+    box-shadow: 0 10px 32px 0 rgba(30,100,180,0.13), 0 2px 6px 0 rgba(30,100,180,0.11);
+    padding: 36px 30px 30px 30px;
+    animation: fadein 1s;
+  }
+  @keyframes fadein {
+    from { opacity: 0; transform: translateY(25px);}
+    to { opacity: 1; transform: translateY(0);}
   }
   h2 {
-    margin: 0 0 18px 0;
-    font-size: 2.1rem;
+    margin: 0 0 22px 0;
+    font-size: 1.45rem;
     font-weight: 600;
     text-align: center;
     color: #1767b2;
@@ -35,35 +59,39 @@
     margin: 0 0 26px 0;
   }
   label {
-    margin-top: 16px;
+    margin-top: 18px;
     font-size: 1.07rem;
     font-weight: 500;
     color: #1767b2;
+    display: block;
+    transition: color .2s;
   }
   input, select, textarea {
     margin-top: 7px;
     margin-bottom: 2px;
     font-size: 1rem;
-    padding: 8px 10px;
-    border: 1.5px solid #b2b8c2;
-    border-radius: 5px;
+    padding: 10px 12px;
+    border: 1.7px solid #b2b8c2;
+    border-radius: 7px;
     background: #f8faff;
     width: 100%;
     box-sizing: border-box;
-    transition: border-color 0.22s;
+    transition: border-color 0.22s, background 0.22s, box-shadow 0.14s;
+    outline: none;
   }
   input:focus, select:focus, textarea:focus {
-    border-color: #1767b2;
-    outline: none;
-    background: #eef6ff;
+    border-color: #2fa7e2;
+    background: #eaf6ff;
+    box-shadow: 0 2px 10px #2fa7e244;
   }
   textarea {
     resize: vertical;
+    min-height: 50px;
   }
   .image-preview-grid {
     display: flex;
-    gap: 14px;
-    margin-top: 8px;
+    gap: 16px;
+    margin-top: 10px;
     flex-wrap: wrap;
     justify-content: flex-start;
   }
@@ -72,21 +100,27 @@
     height: 90px;
     object-fit: cover;
     border: 1.5px solid #b2b8c2;
-    border-radius: 7px;
+    border-radius: 9px;
     background: #fff;
-    box-shadow: 0 2px 8px #b2c5e6a3;
+    box-shadow: 0 3px 12px #b2c5e6a3;
+    transition: transform .2s;
+  }
+  .image-preview-grid img:hover {
+    transform: scale(1.05) rotate(-2deg);
+    border-color: #2fa7e2;
   }
   .signature-container {
     margin: 18px 0 18px 0;
     background: #f7fbff;
-    border-radius: 7px;
-    padding: 12px 12px 10px 12px;
-    box-shadow: 0 1px 3px #b2c5e65c;
+    border-radius: 8px;
+    padding: 14px 12px 12px 12px;
+    box-shadow: 0 1px 4px #b2c5e65c;
   }
   .signature-container label {
     color: #2d3d6b;
-    font-weight: 500;
+    font-weight: 600;
     margin-bottom: 7px;
+    font-size: 1.08rem;
   }
   canvas {
     border: 1.5px solid #b2b8c2;
@@ -97,39 +131,43 @@
     max-width: 320px;
     height: 80px;
     display: block;
+    box-shadow: 0 1px 6px #2fa7e233;
   }
   button[type="button"] {
     background: #fff;
     color: #1767b2;
     border: 1.3px solid #1767b2;
     border-radius: 5px;
-    padding: 5px 18px;
+    padding: 6px 22px;
     cursor: pointer;
     font-size: 1rem;
     margin-top: 0;
-    transition: background 0.18s, color 0.18s;
+    margin-bottom: 6px;
+    transition: background 0.18s, color 0.18s, border 0.19s;
   }
   button[type="button"]:hover {
     background: #1767b2;
     color: #fff;
+    border-color: #2fa7e2;
   }
   button[type="submit"] {
     background: linear-gradient(90deg, #1767b2 0%, #2fa7e2 100%);
     color: #fff;
     border: none;
-    border-radius: 7px;
-    padding: 13px 0;
+    border-radius: 9px;
+    padding: 15px 0;
     font-size: 1.13rem;
-    font-weight: 600;
-    margin-top: 22px;
+    font-weight: 700;
+    margin-top: 28px;
     width: 100%;
     cursor: pointer;
-    box-shadow: 0 4px 16px #1767b222;
+    box-shadow: 0 5px 18px #1767b222;
+    letter-spacing: 1px;
     transition: background 0.2s, box-shadow 0.18s;
   }
   button[type="submit"]:hover {
     background: linear-gradient(90deg, #1560a6 0%, #23a0db 100%);
-    box-shadow: 0 2px 10px #1767b233;
+    box-shadow: 0 2px 14px #1767b244;
   }
   #content {
     font-family: 'Kanit', sans-serif;
@@ -141,11 +179,23 @@
     background: white;
     box-sizing: border-box;
   }
+  footer {
+    text-align: center;
+    color: #2fa7e2;
+    font-size: 1rem;
+    margin: 24px 0 10px 0;
+    letter-spacing: 0.5px;
+    opacity: 0.6;
+    padding-bottom: 10px;
+  }
+  /* Responsive for mobile */
   @media (max-width: 700px) {
-    .container { max-width: 99vw; padding: 7vw 2vw 5vw 2vw; }
+    .container { max-width: 99vw; padding: 5vw 1vw 5vw 1vw; }
     #content { width: 99vw; max-width: 99vw;}
-    .image-preview-grid img { width: 95px; height: 70px; }
-    h2 { font-size: 1.3rem;}
+    .image-preview-grid img { width: 90px; height: 68px; }
+    h2 { font-size: 1.13rem;}
+    header { padding: 16px 0 14px 0;}
+    header h1 { font-size: 1.25rem;}
   }
 </style>
 </head>
@@ -156,44 +206,57 @@
       window.location.href = "login.html";  // เปลี่ยนเป็นชื่อหน้า login ของคุณ
     }
   </script>
-<div class="container">
-  <h2>สร้างรายงาน Service Report</h2>
-  <form id="reportForm">
-    <label>ชื่อลูกค้า:<input type="text" id="customerName" required></label>
-    <label>ประเภทงาน:
-      <select id="jobType" required>
-        <option value="">-- เลือกประเภทงาน --</option>
-        <option value="Service">Service</option>
-        <option value="Preventive Maintenance">Preventive Maintenance</option>
-        <option value="Calibration">Calibration</option>
-        <option value="Other">Other</option>
-      </select>
-    </label>
-    <label>ชื่อเครื่อง:<input type="text" id="deviceName" required></label>
-    <label>ยี่ห้อ:<input type="text" id="brand" required></label>
-    <label>รุ่น:<input type="text" id="model" required></label>
-    <label>หมายเลขครุภัณฑ์:<input type="text" id="assetNumber" required></label>
-    <label>Serial Number:<input type="text" id="serialNumber" required></label>
-    <label>รายละเอียดงาน:<textarea id="serviceDetails" rows="4" required></textarea></label>
-    <label>วันที่:<input type="date" id="serviceDate" required></label>
-    <label>เพิ่มรูปภาพ:
-      <input type="file" id="imageInput" accept="image/*" multiple>
-      <div class="image-preview-grid" id="imagePreview"></div>
-    </label>
-    <div class="signature-container">
-      <label>ลายเซ็นบริษัท:</label>
-      <canvas id="sig1" width="320" height="80"></canvas>
-      <button type="button" onclick="clearCanvas(event,'sig1')">ล้างลายเซ็นที่ 1</button>
+  <header>
+    <img src="logo.png" alt="Logo">
+    <h1>ระบบสร้างรายงาน Service Report</h1>
+    <div style="font-size:1.08rem;opacity:.9;font-weight:400;margin-top:3px;">
+      <span style="vertical-align:middle;">IDMS COMPANY LIMITED</span>
     </div>
-    <div class="signature-container">
-      <label>ลายเซ็นลูกค้า:</label>
-      <canvas id="sig2" width="320" height="80"></canvas>
-      <button type="button" onclick="clearCanvas(event,'sig2')">ล้างลายเซ็นที่ 2</button>
-    </div>
-    <button type="submit">สร้าง PDF</button>
-  </form>
-  <div id="content" style="display:none;"></div>
-</div>
+  </header>
+  <div class="container">
+    <h2>
+      <span style="color:#2fa7e2;margin-right:7px;">📝</span>
+      สร้างรายงาน Service Report
+    </h2>
+    <form id="reportForm">
+      <label>ชื่อลูกค้า:<input type="text" id="customerName" required placeholder="กรอกชื่อลูกค้า..."></label>
+      <label>ประเภทงาน:
+        <select id="jobType" required>
+          <option value="">-- เลือกประเภทงาน --</option>
+          <option value="Service">Service</option>
+          <option value="Preventive Maintenance">Preventive Maintenance</option>
+          <option value="Calibration">Calibration</option>
+          <option value="Other">Other</option>
+        </select>
+      </label>
+      <label>ชื่อเครื่อง:<input type="text" id="deviceName" required placeholder="ชื่อเครื่อง..."></label>
+      <label>ยี่ห้อ:<input type="text" id="brand" required placeholder="ยี่ห้อ..."></label>
+      <label>รุ่น:<input type="text" id="model" required placeholder="รุ่น..."></label>
+      <label>หมายเลขครุภัณฑ์:<input type="text" id="assetNumber" required placeholder="หมายเลขครุภัณฑ์..."></label>
+      <label>Serial Number:<input type="text" id="serialNumber" required placeholder="Serial Number..."></label>
+      <label>รายละเอียดงาน:<textarea id="serviceDetails" rows="4" required placeholder="อธิบายรายละเอียดงานที่ทำ..."></textarea></label>
+      <label>วันที่:<input type="date" id="serviceDate" required></label>
+      <label>เพิ่มรูปภาพ:
+        <input type="file" id="imageInput" accept="image/*" multiple>
+        <div class="image-preview-grid" id="imagePreview"></div>
+      </label>
+      <div class="signature-container">
+        <label>ลายเซ็นบริษัท:</label>
+        <canvas id="sig1" width="320" height="80"></canvas>
+        <button type="button" onclick="clearCanvas(event,'sig1')">ล้างลายเซ็นที่ 1</button>
+      </div>
+      <div class="signature-container">
+        <label>ลายเซ็นลูกค้า:</label>
+        <canvas id="sig2" width="320" height="80"></canvas>
+        <button type="button" onclick="clearCanvas(event,'sig2')">ล้างลายเซ็นที่ 2</button>
+      </div>
+      <button type="submit">สร้าง PDF</button>
+    </form>
+    <div id="content" style="display:none;"></div>
+  </div>
+  <footer>
+    © 2025 IDMS COMPANY LIMITED | Service Report System
+  </footer>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script>
@@ -225,7 +288,6 @@
     });
   });
 
-
   document.getElementById('reportForm').addEventListener('submit', async function(e) {
     e.preventDefault();
 
@@ -253,7 +315,7 @@
         box-sizing: border-box;
         font-family: 'Kanit', sans-serif;
       ">
-        <img src="data:image/jpeg;base64,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"
+        <img src="logo.png"
           style="position: absolute; top: 15mm; left: 15mm; width: 30mm; height: auto; object-fit: contain;" 
           alt="Company Logo" />
         <div style="text-align:center; line-height:1.2; margin-bottom:10px;">
