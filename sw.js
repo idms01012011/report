@@ -1,9 +1,9 @@
-// sw.js แก้ paths ให้เป็น relative
 const CACHE_NAME = 'service-report';
 const urlsToCache = [
+  'login.html',
   'index.html',
   'manifest.json',
-  'logo.jpg',
+  'logo-192.png',
   'sw.js'
 ];
 
