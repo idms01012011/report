@@ -4,25 +4,131 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Service Report</title>
-<link href="https://fonts.googleapis.com/css2?family=Kanit&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;600&display=swap" rel="stylesheet" />
 <style>
   body {
     font-family: 'Kanit', sans-serif;
-    padding: 20px;
-    background: #f0f0f0;
+    padding: 0;
+    margin: 0;
+    background: linear-gradient(120deg, #c6e2ff 0%, #f0f0f0 100%);
+    min-height: 100vh;
+  }
+  .container {
+    max-width: 680px;
+    margin: 40px auto 24px auto;
+    background: rgba(255,255,255,0.96);
+    border-radius: 16px;
+    box-shadow: 0 10px 32px 0 rgba(30,100,180,0.11), 0 2px 4px 0 rgba(30,100,180,0.07);
+    padding: 32px 24px 24px 24px;
+  }
+  h2 {
+    margin: 0 0 18px 0;
+    font-size: 2.1rem;
+    font-weight: 600;
+    text-align: center;
+    color: #1767b2;
+    letter-spacing: 1px;
   }
   form {
-    background: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    max-width: 600px;
-    margin-bottom: 30px;
+    padding: 0;
+    margin: 0 0 26px 0;
   }
-  label, select, input, textarea, button {
-    display: block;
+  label {
+    margin-top: 16px;
+    font-size: 1.07rem;
+    font-weight: 500;
+    color: #1767b2;
+  }
+  input, select, textarea {
+    margin-top: 7px;
+    margin-bottom: 2px;
+    font-size: 1rem;
+    padding: 8px 10px;
+    border: 1.5px solid #b2b8c2;
+    border-radius: 5px;
+    background: #f8faff;
     width: 100%;
-    margin-top: 10px;
-    font-size: 16px;
+    box-sizing: border-box;
+    transition: border-color 0.22s;
+  }
+  input:focus, select:focus, textarea:focus {
+    border-color: #1767b2;
+    outline: none;
+    background: #eef6ff;
+  }
+  textarea {
+    resize: vertical;
+  }
+  .image-preview-grid {
+    display: flex;
+    gap: 14px;
+    margin-top: 8px;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+  .image-preview-grid img {
+    width: 120px;
+    height: 90px;
+    object-fit: cover;
+    border: 1.5px solid #b2b8c2;
+    border-radius: 7px;
+    background: #fff;
+    box-shadow: 0 2px 8px #b2c5e6a3;
+  }
+  .signature-container {
+    margin: 18px 0 18px 0;
+    background: #f7fbff;
+    border-radius: 7px;
+    padding: 12px 12px 10px 12px;
+    box-shadow: 0 1px 3px #b2c5e65c;
+  }
+  .signature-container label {
+    color: #2d3d6b;
+    font-weight: 500;
+    margin-bottom: 7px;
+  }
+  canvas {
+    border: 1.5px solid #b2b8c2;
+    background: #fff;
+    border-radius: 7px;
+    margin-bottom: 8px;
+    width: 100%;
+    max-width: 320px;
+    height: 80px;
+    display: block;
+  }
+  button[type="button"] {
+    background: #fff;
+    color: #1767b2;
+    border: 1.3px solid #1767b2;
+    border-radius: 5px;
+    padding: 5px 18px;
+    cursor: pointer;
+    font-size: 1rem;
+    margin-top: 0;
+    transition: background 0.18s, color 0.18s;
+  }
+  button[type="button"]:hover {
+    background: #1767b2;
+    color: #fff;
+  }
+  button[type="submit"] {
+    background: linear-gradient(90deg, #1767b2 0%, #2fa7e2 100%);
+    color: #fff;
+    border: none;
+    border-radius: 7px;
+    padding: 13px 0;
+    font-size: 1.13rem;
+    font-weight: 600;
+    margin-top: 22px;
+    width: 100%;
+    cursor: pointer;
+    box-shadow: 0 4px 16px #1767b222;
+    transition: background 0.2s, box-shadow 0.18s;
+  }
+  button[type="submit"]:hover {
+    background: linear-gradient(90deg, #1560a6 0%, #23a0db 100%);
+    box-shadow: 0 2px 10px #1767b233;
   }
   #content {
     font-family: 'Kanit', sans-serif;
@@ -30,107 +136,83 @@
     color: #000;
     padding: 0;
     margin: 0;
-    width: 180mm;  /* กว้าง 180mm (210mm - 2*15mm margin) */
+    width: 180mm;
     background: white;
     box-sizing: border-box;
   }
-  h2 {
-    margin: 0 0 10px 0;
-    padding: 0;
-    line-height: 1.2;
-    text-align: center;
+  @media (max-width: 700px) {
+    .container { max-width: 99vw; padding: 7vw 2vw 5vw 2vw; }
+    #content { width: 99vw; max-width: 99vw;}
+    .image-preview-grid img { width: 95px; height: 70px; }
+    h2 { font-size: 1.3rem;}
   }
-  hr {
-    margin: 10px 0;
-  }
-  .image-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
-  }
-  .image-grid img {
-    max-width: 100%;
-    max-height: 200px;
-    object-fit: contain;
-    page-break-inside: avoid;
-  }
-  canvas {
-  border: 1px solid #ccc;
-  background: #fff;
-  border-radius: 5px;
-  touch-action: none; /* ป้องกันเลื่อนหน้าจอเวลาวาดมือถือ */
-  width: 300px;
-  height: 100px;
-}
-.signature-container {
-  margin: 20px 0;
-}
-button {
-  margin-top: 8px;
-}
-
 </style>
 </head>
 <body>
-<h2>สร้างรายงาน Service Report</h2>
-
-<form id="reportForm">
-  <label>ชื่อลูกค้า:<input type="text" id="customerName" required></label>
-  <label>ประเภทงาน:
-    <select id="jobType" required>
-      <option value="">-- เลือกประเภทงาน --</option>
-      <option value="Service">Service</option>
-      <option value="Preventive Maintenance">Preventive Maintenance</option>
-      <option value="Calibration">Calibration</option>
-      <option value="Other">Other</option>
-    </select>
-  </label>
-  <label>ชื่อเครื่อง:<input type="text" id="deviceName" required></label>
-  <label>ยี่ห้อ:<input type="text" id="brand" required></label>
-  <label>รุ่น:<input type="text" id="model" required></label>
-  <label>หมายเลขครุภัณฑ์:<input type="text" id="assetNumber" required></label>
-  <label>Serial Number:<input type="text" id="serialNumber" required></label>
-  <label>รายละเอียดงาน:<textarea id="serviceDetails" rows="4" required></textarea></label>
-  <label>วันที่:<input type="date" id="serviceDate" required></label>
-  <label>เพิ่มรูปภาพ:<input type="file" id="imageInput" accept="image/*" multiple></label>
-  <div class="signature-container">
-  <label>ลายเซ็นที่ 1:</label><br />
-  <canvas id="sig1" width="300" height="100"></canvas><br />
-  <button type="button" onclick="clearCanvas(event,'sig1')">ล้างลายเซ็นที่ 1</button>
+<div class="container">
+  <h2>สร้างรายงาน Service Report</h2>
+  <form id="reportForm">
+    <label>ชื่อลูกค้า:<input type="text" id="customerName" required></label>
+    <label>ประเภทงาน:
+      <select id="jobType" required>
+        <option value="">-- เลือกประเภทงาน --</option>
+        <option value="Service">Service</option>
+        <option value="Preventive Maintenance">Preventive Maintenance</option>
+        <option value="Calibration">Calibration</option>
+        <option value="Other">Other</option>
+      </select>
+    </label>
+    <label>ชื่อเครื่อง:<input type="text" id="deviceName" required></label>
+    <label>ยี่ห้อ:<input type="text" id="brand" required></label>
+    <label>รุ่น:<input type="text" id="model" required></label>
+    <label>หมายเลขครุภัณฑ์:<input type="text" id="assetNumber" required></label>
+    <label>Serial Number:<input type="text" id="serialNumber" required></label>
+    <label>รายละเอียดงาน:<textarea id="serviceDetails" rows="4" required></textarea></label>
+    <label>วันที่:<input type="date" id="serviceDate" required></label>
+    <label>เพิ่มรูปภาพ:
+      <input type="file" id="imageInput" accept="image/*" multiple>
+      <div class="image-preview-grid" id="imagePreview"></div>
+    </label>
+    <div class="signature-container">
+      <label>ลายเซ็นบริษัท:</label>
+      <canvas id="sig1" width="320" height="80"></canvas>
+      <button type="button" onclick="clearCanvas(event,'sig1')">ล้างลายเซ็นที่ 1</button>
+    </div>
+    <div class="signature-container">
+      <label>ลายเซ็นลูกค้า:</label>
+      <canvas id="sig2" width="320" height="80"></canvas>
+      <button type="button" onclick="clearCanvas(event,'sig2')">ล้างลายเซ็นที่ 2</button>
+    </div>
+    <button type="submit">สร้าง PDF</button>
+  </form>
+  <div id="content" style="display:none;"></div>
 </div>
-
-<div class="signature-container">
-  <label>ลายเซ็นที่ 2:</label><br />
-  <canvas id="sig2" width="300" height="100"></canvas><br />
-  <button type="button" onclick="clearCanvas(event,'sig2')">ล้างลายเซ็นที่ 2</button>
-</div>
-  <button type="submit">สร้าง PDF</button>
-</form>
-
-<div id="content" style="display:none;"></div>
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-
 <script>
   const { jsPDF } = window.jspdf;
 
   let imageDataUrls = [];
   document.getElementById('imageInput').addEventListener('change', e => {
     const files = e.target.files;
+    const imagePreview = document.getElementById('imagePreview');
+    imagePreview.innerHTML = '';
 
     if (files.length > 2) {
       alert('คุณสามารถเลือกได้สูงสุด 2 รูปเท่านั้น');
-      e.target.value = ''; // เคลียร์ไฟล์ที่เลือกออก
+      e.target.value = '';
       imageDataUrls = [];
       return;
     }
-
     imageDataUrls = [];
     Array.from(files).forEach(file => {
       const reader = new FileReader();
       reader.onload = function(evt) {
         imageDataUrls.push(evt.target.result);
+        // แสดงตัวอย่าง
+        const img = document.createElement('img');
+        img.src = evt.target.result;
+        imagePreview.appendChild(img);
       };
       reader.readAsDataURL(file);
     });
@@ -151,10 +233,8 @@ button {
     const date = document.getElementById('serviceDate').value;
     const sig1 = document.getElementById('sig1');
     const sig2 = document.getElementById('sig2');
-
     const sig1DataUrl = sig1.toDataURL('image/png');
     const sig2DataUrl = sig2.toDataURL('image/png');
-
 
     let htmlContent = `
       <div style="
@@ -166,25 +246,16 @@ button {
         box-sizing: border-box;
         font-family: 'Kanit', sans-serif;
       ">
-        <!-- โลโก้บริษัท -->
         <img src="data:image/jpeg;base64,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"
-          position: absolute; 
-          top: 15mm; 
-          left: 15mm; 
-          width: 30mm;
-          height: auto;
-          object-fit: contain;
-        " alt="Company Logo" />
-
+          style="position: absolute; top: 15mm; left: 15mm; width: 30mm; height: auto; object-fit: contain;" 
+          alt="Company Logo" />
         <div style="text-align:center; line-height:1.2; margin-bottom:10px;">
           <strong style="font-size:16px;">IDMS COMPANY LIMITED</strong><br>
           126/101, Moo 4 T.Bang Larmung A.Bang Lamung Chon Buri 20150<br>
           Tel. 081-998-8372 | E-Mail: IDMS2@hotmail.com
         </div>
-
         <h2 style="margin:0 0 10px 0; padding:0;">Service Report</h2>
         <hr style="margin:10px 0;">
-
         <div style="margin-bottom:10px;">
           <div style="display: flex; justify-content: space-between; gap: 10px;">
             <div style="width: 50%;"><strong>Customer Name:</strong> ${name}</div>
@@ -194,11 +265,7 @@ button {
             <strong>Service Date:</strong> ${date}
           </div>
         </div>
-
-
-
         <hr style="margin:10px 0;">
-
         <div style="margin-bottom:10px;">
           <strong>Device Information:</strong><br>
           <div style="display: flex; gap: 10px; justify-content: space-between;">
@@ -211,14 +278,11 @@ button {
           </div>
           <div style="margin-top: 5px;">- Serial Number: ${serialNumber}</div>
         </div>
-
         <hr style="margin:10px 0;">
-
         <div style="margin-bottom:10px;">
           <strong>Service Details:</strong><br>
           <div style="margin-left:10px;">${details}</div>
         </div>
-
         ${imageDataUrls.length > 0 ? `
           <hr style="margin:10px 0;">
           <div>
@@ -230,19 +294,18 @@ button {
             </div>
           </div>
         ` : ''}
-
       </div>
-        <hr style="margin:10px 0;">
-        <div style="display: flex; justify-content: center; gap: 50px; align-items: center;">
-          <div style="text-align: center;">
-            <strong>ลายเซ็นบริษัท</strong><br>
-            <img src="${sig1DataUrl}" style="width: 280px; height: 100px; border: 1px solid #000; object-fit: contain;" />
-          </div>
-          <div style="text-align: center;">
-            <strong>ลายเซ็นลูกค้า</strong><br>
-            <img src="${sig2DataUrl}" style="width: 280px; height: 100px; border: 1px solid #000; object-fit: contain;" />
-          </div>
+      <hr style="margin:10px 0;">
+      <div style="display: flex; justify-content: center; gap: 50px; align-items: center;">
+        <div style="text-align: center;">
+          <strong>ลายเซ็นบริษัท</strong><br>
+          <img src="${sig1DataUrl}" style="width: 180px; height: 60px; border: 1px solid #000; object-fit: contain;" />
         </div>
+        <div style="text-align: center;">
+          <strong>ลายเซ็นลูกค้า</strong><br>
+          <img src="${sig2DataUrl}" style="width: 180px; height: 60px; border: 1px solid #000; object-fit: contain;" />
+        </div>
+      </div>
     `;
 
     const container = document.getElementById('content');
@@ -251,8 +314,6 @@ button {
 
     // รอให้ภาพโหลดหมดก่อนจับภาพ
     await new Promise(resolve => setTimeout(resolve, 800));
-
-    // สร้าง canvas จาก div
     const canvas = await html2canvas(container, {
       scale: 2,
       useCORS: true,
@@ -261,24 +322,14 @@ button {
     });
 
     const imgData = canvas.toDataURL('image/jpeg', 1.0);
-
-    // สร้าง pdf ขนาด A4 หน่วยเป็น mm
-    const pdf = new jsPDF({
-      unit: 'mm',
-      format: 'a4'
-    });
-
-    // กำหนดความกว้างและความสูงภาพใน pdf (กว้าง 180mm ตาม margin)
+    const pdf = new jsPDF({ unit: 'mm', format: 'a4' });
     const pdfWidth = 180;
     const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
-
-    // ใส่ภาพลง pdf ที่ตำแหน่ง (x=15,y=15) ให้มี margin รอบด้าน
     pdf.addImage(imgData, 'JPEG', 15, 15, pdfWidth, pdfHeight);
-
     pdf.save(`Service_Report_${name}_${date}.pdf`);
-
     container.style.display = 'none';
   });
+
   function resizeCanvasToDisplaySize(canvas) {
     const rect = canvas.getBoundingClientRect();
     canvas.width = rect.width;
@@ -286,79 +337,68 @@ button {
   }
 
   function setupSignatureCanvas(canvasId) {
-  const canvas = document.getElementById(canvasId);
-  const ctx = canvas.getContext('2d');
-  resizeCanvasToDisplaySize(canvas);
-  ctx.lineWidth = 2;
-  ctx.strokeStyle = "#000";
+    const canvas = document.getElementById(canvasId);
+    const ctx = canvas.getContext('2d');
+    resizeCanvasToDisplaySize(canvas);
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = "#1767b2";
+    let drawing = false;
 
-  let drawing = false;
-
-  function getPointerPos(evt) {
-    const rect = canvas.getBoundingClientRect();
-    let x, y;
-    if (evt.touches && evt.touches.length > 0) {
-      x = evt.touches[0].clientX - rect.left;
-      y = evt.touches[0].clientY - rect.top;
-    } else {
-      x = evt.clientX - rect.left;
-      y = evt.clientY - rect.top;
+    function getPointerPos(evt) {
+      const rect = canvas.getBoundingClientRect();
+      let x, y;
+      if (evt.touches && evt.touches.length > 0) {
+        x = evt.touches[0].clientX - rect.left;
+        y = evt.touches[0].clientY - rect.top;
+      } else {
+        x = evt.clientX - rect.left;
+        y = evt.clientY - rect.top;
+      }
+      return {x, y};
     }
-    return {x, y};
+
+    canvas.addEventListener('mousedown', (e) => {
+      drawing = true;
+      const pos = getPointerPos(e);
+      ctx.beginPath();
+      ctx.moveTo(pos.x, pos.y);
+    });
+    canvas.addEventListener('mousemove', (e) => {
+      if (!drawing) return;
+      const pos = getPointerPos(e);
+      ctx.lineTo(pos.x, pos.y);
+      ctx.stroke();
+    });
+    canvas.addEventListener('mouseup', () => drawing = false);
+    canvas.addEventListener('mouseout', () => drawing = false);
+
+    canvas.addEventListener('touchstart', (e) => {
+      e.preventDefault();
+      drawing = true;
+      const pos = getPointerPos(e);
+      ctx.beginPath();
+      ctx.moveTo(pos.x, pos.y);
+    }, { passive: false });
+    canvas.addEventListener('touchmove', (e) => {
+      e.preventDefault();
+      if (!drawing) return;
+      const pos = getPointerPos(e);
+      ctx.lineTo(pos.x, pos.y);
+      ctx.stroke();
+    }, { passive: false });
+    canvas.addEventListener('touchend', (e) => {
+      e.preventDefault();
+      drawing = false;
+    }, { passive: false });
   }
-
-  canvas.addEventListener('mousedown', (e) => {
-    drawing = true;
-    const pos = getPointerPos(e);
-    ctx.beginPath();
-    ctx.moveTo(pos.x, pos.y);
-  });
-
-  canvas.addEventListener('mousemove', (e) => {
-    if (!drawing) return;
-    const pos = getPointerPos(e);
-    ctx.lineTo(pos.x, pos.y);
-    ctx.stroke();
-  });
-
-  canvas.addEventListener('mouseup', () => drawing = false);
-  canvas.addEventListener('mouseout', () => drawing = false);
-
-  // Touch events
-  canvas.addEventListener('touchstart', (e) => {
-    e.preventDefault();
-    drawing = true;
-    const pos = getPointerPos(e);
-    ctx.beginPath();
-    ctx.moveTo(pos.x, pos.y);
-  }, { passive: false });
-
-  canvas.addEventListener('touchmove', (e) => {
-    e.preventDefault();
-    if (!drawing) return;
-    const pos = getPointerPos(e);
-    ctx.lineTo(pos.x, pos.y);
-    ctx.stroke();
-  }, { passive: false });
-
-  canvas.addEventListener('touchend', (e) => {
-    e.preventDefault();
-    drawing = false;
-  }, { passive: false });
-}
-
-function clearCanvas(event, canvasId) {
-  event.preventDefault(); // ป้องกัน submit
-  const canvas = document.getElementById(canvasId);
-  const ctx = canvas.getContext('2d');
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-}
-
-// เรียก setup สำหรับทั้งสอง canvas
-setupSignatureCanvas('sig1');
-setupSignatureCanvas('sig2');
-
+  function clearCanvas(event, canvasId) {
+    event.preventDefault();
+    const canvas = document.getElementById(canvasId);
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
+  setupSignatureCanvas('sig1');
+  setupSignatureCanvas('sig2');
 </script>
-
 </body>
 </html>
