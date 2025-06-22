@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>เข้าสู่ระบบ</title>
+  <link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+  <div class="container center">
+    <h2 class="title">🔐 เข้าสู่ระบบ</h2>
+    <form onsubmit="return login()" class="form-section">
+      <input type="text" id="username" placeholder="ชื่อผู้ใช้" required/>
+      <input type="password" id="password" placeholder="รหัสผ่าน" required/>
+      <button type="submit" class="btn primary">➡️ เข้าสู่ระบบ</button>
+    </form>
+  </div>
+  <script>
+    function login() {
+      const u = document.getElementById('username').value;
+      const p = document.getElementById('password').value;
+      if (u === 'admin' && p === 'admin123') {
+        localStorage.setItem('auth', '1');
+        window.location.href = 'main.html';
+      } else {
+        alert('ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง');
+      }
+      return false;
+    }
+  </script>
+</body>
+</html>
